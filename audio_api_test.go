@@ -26,7 +26,7 @@ func TestAudio(t *testing.T) {
 
 	testcases := []struct {
 		name     string
-		createFn func(context.Context, openai.AudioRequest) (openai.AudioResponse, error)
+		createFn func(context.Context, openai.AudioRequest) (openai.JobResponse, error)
 	}{
 		{
 			"transcribe",
@@ -76,7 +76,7 @@ func TestAudioWithOptionalArgs(t *testing.T) {
 
 	testcases := []struct {
 		name     string
-		createFn func(context.Context, openai.AudioRequest) (openai.AudioResponse, error)
+		createFn func(context.Context, openai.AudioRequest) (openai.JobResponse, error)
 	}{
 		{
 			"transcribe",

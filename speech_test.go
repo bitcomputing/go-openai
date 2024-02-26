@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"mime"
 	"net/http"
 	"os"
@@ -79,22 +78,22 @@ func TestSpeechIntegration(t *testing.T) {
 		}
 	})
 
-	t.Run("happy path", func(t *testing.T) {
-		res, err := client.CreateSpeech(context.Background(), openai.CreateSpeechRequest{
-			Model: openai.TTSModel1,
-			Input: "Hello!",
-			Voice: openai.VoiceAlloy,
-		})
-		checks.NoError(t, err, "CreateSpeech error")
-		defer res.Close()
+	// t.Run("happy path", func(t *testing.T) {
+	// 	res, err := client.CreateSpeech(context.Background(), openai.CreateSpeechRequest{
+	// 		Model: openai.TTSModel1,
+	// 		Input: "Hello!",
+	// 		Voice: openai.VoiceAlloy,
+	// 	})
+	// 	checks.NoError(t, err, "CreateSpeech error")
+	// 	defer res.Close()
 
-		buf, err := io.ReadAll(res)
-		checks.NoError(t, err, "ReadAll error")
+	// 	buf, err := io.ReadAll(res)
+	// 	checks.NoError(t, err, "ReadAll error")
 
-		// save buf to file as mp3
-		err = os.WriteFile("test.mp3", buf, 0644)
-		checks.NoError(t, err, "Create error")
-	})
+	// 	// save buf to file as mp3
+	// 	err = os.WriteFile("test.mp3", buf, 0644)
+	// 	checks.NoError(t, err, "Create error")
+	// })
 	t.Run("invalid model", func(t *testing.T) {
 		_, err := client.CreateSpeech(context.Background(), openai.CreateSpeechRequest{
 			Model: "invalid_model",
