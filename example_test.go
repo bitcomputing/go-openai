@@ -3,7 +3,6 @@ package openai_test
 import (
 	"bufio"
 	"context"
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -91,7 +90,7 @@ func ExampleClient_CreateCompletion() {
 		fmt.Printf("Completion error: %v\n", err)
 		return
 	}
-	fmt.Println(resp.Choices[0].Text)
+	fmt.Println(resp.JobID)
 }
 
 func ExampleClient_CreateCompletionStream() {
@@ -141,35 +140,35 @@ func ExampleClient_CreateTranscription() {
 		fmt.Printf("Transcription error: %v\n", err)
 		return
 	}
-	fmt.Println(resp.Text)
+	fmt.Println(resp.JobID)
 }
 
-func ExampleClient_CreateTranscription_captions() {
-	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
+// func ExampleClient_CreateTranscription_captions() {
+// 	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
 
-	resp, err := client.CreateTranscription(
-		context.Background(),
-		openai.AudioRequest{
-			Model:    openai.Whisper1,
-			FilePath: os.Args[1],
-			Format:   openai.AudioResponseFormatSRT,
-		},
-	)
-	if err != nil {
-		fmt.Printf("Transcription error: %v\n", err)
-		return
-	}
-	f, err := os.Create(os.Args[1] + ".srt")
-	if err != nil {
-		fmt.Printf("Could not open file: %v\n", err)
-		return
-	}
-	defer f.Close()
-	if _, err = f.WriteString(resp.Text); err != nil {
-		fmt.Printf("Error writing to file: %v\n", err)
-		return
-	}
-}
+// 	resp, err := client.CreateTranscription(
+// 		context.Background(),
+// 		openai.AudioRequest{
+// 			Model:    openai.Whisper1,
+// 			FilePath: os.Args[1],
+// 			Format:   openai.AudioResponseFormatSRT,
+// 		},
+// 	)
+// 	if err != nil {
+// 		fmt.Printf("Transcription error: %v\n", err)
+// 		return
+// 	}
+// 	f, err := os.Create(os.Args[1] + ".srt")
+// 	if err != nil {
+// 		fmt.Printf("Could not open file: %v\n", err)
+// 		return
+// 	}
+// 	defer f.Close()
+// 	if _, err = f.WriteString(resp.Text); err != nil {
+// 		fmt.Printf("Error writing to file: %v\n", err)
+// 		return
+// 	}
+// }
 
 func ExampleClient_CreateTranslation() {
 	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
@@ -184,7 +183,7 @@ func ExampleClient_CreateTranslation() {
 		fmt.Printf("Translation error: %v\n", err)
 		return
 	}
-	fmt.Println(resp.Text)
+	fmt.Println(resp.JobID)
 }
 
 func ExampleClient_CreateImage() {
@@ -203,47 +202,47 @@ func ExampleClient_CreateImage() {
 		fmt.Printf("Image creation error: %v\n", err)
 		return
 	}
-	fmt.Println(respURL.Data[0].URL)
+	fmt.Println(respURL.JobID)
 }
 
-func ExampleClient_CreateImage_base64() {
-	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
+// func ExampleClient_CreateImage_base64() {
+// 	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
 
-	resp, err := client.CreateImage(
-		context.Background(),
-		openai.ImageRequest{
-			Prompt:         "Portrait of a humanoid parrot in a classic costume, high detail, realistic light, unreal engine",
-			Size:           openai.CreateImageSize512x512,
-			ResponseFormat: openai.CreateImageResponseFormatB64JSON,
-			N:              1,
-		},
-	)
-	if err != nil {
-		fmt.Printf("Image creation error: %v\n", err)
-		return
-	}
+// 	resp, err := client.CreateImage(
+// 		context.Background(),
+// 		openai.ImageRequest{
+// 			Prompt:         "Portrait of a humanoid parrot in a classic costume, high detail, realistic light, unreal engine",
+// 			Size:           openai.CreateImageSize512x512,
+// 			ResponseFormat: openai.CreateImageResponseFormatB64JSON,
+// 			N:              1,
+// 		},
+// 	)
+// 	if err != nil {
+// 		fmt.Printf("Image creation error: %v\n", err)
+// 		return
+// 	}
 
-	b, err := base64.StdEncoding.DecodeString(resp.Data[0].B64JSON)
-	if err != nil {
-		fmt.Printf("Base64 decode error: %v\n", err)
-		return
-	}
+// 	b, err := base64.StdEncoding.DecodeString(resp.Data[0].B64JSON)
+// 	if err != nil {
+// 		fmt.Printf("Base64 decode error: %v\n", err)
+// 		return
+// 	}
 
-	f, err := os.Create("example.png")
-	if err != nil {
-		fmt.Printf("File creation error: %v\n", err)
-		return
-	}
-	defer f.Close()
+// 	f, err := os.Create("example.png")
+// 	if err != nil {
+// 		fmt.Printf("File creation error: %v\n", err)
+// 		return
+// 	}
+// 	defer f.Close()
 
-	_, err = f.Write(b)
-	if err != nil {
-		fmt.Printf("File write error: %v\n", err)
-		return
-	}
+// 	_, err = f.Write(b)
+// 	if err != nil {
+// 		fmt.Printf("File write error: %v\n", err)
+// 		return
+// 	}
 
-	fmt.Println("The image was saved as example.png")
-}
+// 	fmt.Println("The image was saved as example.png")
+// }
 
 func ExampleClientConfig_clientWithProxy() {
 	config := openai.DefaultConfig(os.Getenv("OPENAI_API_KEY"))

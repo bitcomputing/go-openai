@@ -178,7 +178,7 @@ type CompletionResponse struct {
 func (c *Client) CreateCompletion(
 	ctx context.Context,
 	request CompletionRequest,
-) (response CompletionResponse, err error) {
+) (response JobResponse, err error) {
 	if request.Stream {
 		err = ErrCompletionStreamNotSupported
 		return

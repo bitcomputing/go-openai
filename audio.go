@@ -84,7 +84,7 @@ func (r *audioTextResponse) ToAudioResponse() AudioResponse {
 func (c *Client) CreateTranscription(
 	ctx context.Context,
 	request AudioRequest,
-) (response AudioResponse, err error) {
+) (response JobResponse, err error) {
 	return c.callAudioAPI(ctx, request, "transcriptions")
 }
 
@@ -92,7 +92,7 @@ func (c *Client) CreateTranscription(
 func (c *Client) CreateTranslation(
 	ctx context.Context,
 	request AudioRequest,
-) (response AudioResponse, err error) {
+) (response JobResponse, err error) {
 	return c.callAudioAPI(ctx, request, "translations")
 }
 
@@ -101,32 +101,35 @@ func (c *Client) callAudioAPI(
 	ctx context.Context,
 	request AudioRequest,
 	endpointSuffix string,
-) (response AudioResponse, err error) {
+) (response JobResponse, err error) {
 	var formBody bytes.Buffer
 	builder := c.createFormBuilder(&formBody)
 
 	if err = audioMultipartForm(request, builder); err != nil {
-		return AudioResponse{}, err
+		return JobResponse{}, err
 	}
 
 	urlSuffix := fmt.Sprintf("/audio/%s", endpointSuffix)
 	req, err := c.newRequest(ctx, http.MethodPost, c.fullURL(urlSuffix, request.Model),
 		withBody(&formBody), withContentType(builder.FormDataContentType()))
 	if err != nil {
-		return AudioResponse{}, err
+		return JobResponse{}, err
 	}
 
-	if request.HasJSONResponse() {
-		err = c.sendRequest(req, &response)
-	} else {
-		var textResponse audioTextResponse
-		err = c.sendRequest(req, &textResponse)
-		response = textResponse.ToAudioResponse()
-	}
-	if err != nil {
-		return AudioResponse{}, err
-	}
+	err = c.sendRequest(req, &response)
 	return
+
+	// if request.HasJSONResponse() {
+	// 	err = c.sendRequest(req, &response)
+	// } else {
+	// 	var textResponse audioTextResponse
+	// 	err = c.sendRequest(req, &textResponse)
+	// 	response = textResponse.ToAudioResponse()
+	// }
+	// if err != nil {
+	// 	return AudioResponse{}, err
+	// }
+	// return
 }
 
 // HasJSONResponse returns true if the response format is JSON.

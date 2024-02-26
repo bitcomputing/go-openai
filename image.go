@@ -66,7 +66,7 @@ type ImageResponseDataInner struct {
 }
 
 // CreateImage - API call to create an image. This is the main endpoint of the DALL-E API.
-func (c *Client) CreateImage(ctx context.Context, request ImageRequest) (response ImageResponse, err error) {
+func (c *Client) CreateImage(ctx context.Context, request ImageRequest) (response JobResponse, err error) {
 	urlSuffix := "/images/generations"
 	req, err := c.newRequest(ctx, http.MethodPost, c.fullURL(urlSuffix, request.Model), withBody(request))
 	if err != nil {

@@ -24,5 +24,5 @@ func main() {
 		fmt.Printf("Image creation error: %v\n", err)
 		return
 	}
-	fmt.Println(respUrl.Data[0].URL)
+	fmt.Println(respUrl.JobID)
 }

@@ -8,3 +8,8 @@ type Usage struct {
 	CompletionTokens int `json:"completion_tokens"`
 	TotalTokens      int `json:"total_tokens"`
 }
+
+type JobResponse struct {
+	JobID string `json:"job_id"`
+	httpHeader
+}

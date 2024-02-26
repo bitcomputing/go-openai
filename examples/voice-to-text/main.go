@@ -31,5 +31,5 @@ func main() {
 		fmt.Printf("Transcription error: %v\n", err)
 		return
 	}
-	fmt.Println(resp.Text)
+	fmt.Println(resp.JobID)
 }

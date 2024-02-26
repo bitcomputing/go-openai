@@ -22,5 +22,5 @@ func main() {
 		fmt.Printf("Completion error: %v\n", err)
 		return
 	}
-	fmt.Println(resp.Choices[0].Text)
+	fmt.Println(resp.JobID)
 }
