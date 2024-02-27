@@ -6,11 +6,20 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sashabaranov/go-openai"
+	"github.com/joho/godotenv"
+
+	"github.com/bitcomputing/go-openai"
 )
 
 func main() {
-	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	config := openai.DefaultConfig(os.Getenv("OPENAI_API_KEY"))
+	config.BaseURL = "https://proxy-dev.ai.opencord.so/openai/v3"
+	client := openai.NewClientWithConfig(config)
 
 	req := openai.ChatCompletionRequest{
 		Model: openai.GPT3Dot5Turbo,
@@ -35,8 +44,8 @@ func main() {
 			fmt.Printf("ChatCompletion error: %v\n", err)
 			continue
 		}
-		fmt.Printf("%s\n\n", resp.Choices[0].Message.Content)
-		req.Messages = append(req.Messages, resp.Choices[0].Message)
+		//fmt.Printf("%+v\n\n", resp)
+		fmt.Printf("jobID:%s\n\n", resp.JobID)
 		fmt.Print("> ")
 	}
 }
