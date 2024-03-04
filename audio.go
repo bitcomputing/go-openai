@@ -3,6 +3,7 @@ package openai
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -198,12 +199,14 @@ func audioMultipartForm(request AudioRequest, b utils.FormBuilder) error {
 		}
 	}
 
-	if len(request.TimeStampGranularities) != 0 && request.Format == AudioResponseFormatVerboseJSON {
-		for _, g := range request.TimeStampGranularities {
-			err = b.WriteField("timestamp_granularities[]", string(g))
-			if err != nil {
-				return fmt.Errorf("writing timestamp_granularities[]: %w", err)
-			}
+	if len(request.TimeStampGranularities) != 0 && request.Format != AudioResponseFormatVerboseJSON {
+		return errors.New("TimeStampGranularities only supported when response_format=verbose_json")
+	}
+
+	for _, g := range request.TimeStampGranularities {
+		err = b.WriteField("timestamp_granularities[]", string(g))
+		if err != nil {
+			return fmt.Errorf("writing timestamp_granularities[]: %w", err)
 		}
 	}
 
