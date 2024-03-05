@@ -59,8 +59,7 @@ func TestAudioWithFailingFormBuilder(t *testing.T) {
 
 	req.Format = AudioResponseFormatSRT
 	err = audioMultipartForm(req, mockBuilder)
-	checks.HasError(t, err, "TimeStampGranularities Only supported with response_format verbose_jsoncannot")
-
+	checks.HasError(t, err, "TimeStampGranularities Only supported with response_format verbose_json")
 }
 
 func TestCreateFileField(t *testing.T) {
