@@ -59,6 +59,12 @@ type AudioRequest struct {
 	TimeStampGranularities []TimestampGranularity
 }
 
+type Word struct {
+	Word  string  `json:"word"`
+	Start float64 `json:"start"`
+	End   float64 `json:"end"`
+}
+
 // AudioResponse represents a response structure for audio API.
 type AudioResponse struct {
 	Task     string  `json:"task"`
@@ -77,12 +83,8 @@ type AudioResponse struct {
 		NoSpeechProb     float64 `json:"no_speech_prob"`
 		Transient        bool    `json:"transient"`
 	} `json:"segments"`
-	Words []struct {
-		Word  string  `json:"word"`
-		Start float64 `json:"start"`
-		End   float64 `json:"end"`
-	} `json:"words"`
-	Text string `json:"text"`
+	Words []Word `json:"words"`
+	Text  string `json:"text"`
 
 	httpHeader
 }
