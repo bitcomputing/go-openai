@@ -32,6 +32,8 @@ const (
 	SpeechResponseFormatOpus SpeechResponseFormat = "opus"
 	SpeechResponseFormatAac  SpeechResponseFormat = "aac"
 	SpeechResponseFormatFlac SpeechResponseFormat = "flac"
+	SpeechResponseFormatWav  SpeechResponseFormat = "wav"
+	SpeechResponseFormatPcm  SpeechResponseFormat = "pcm"
 )
 
 var (
@@ -65,6 +67,7 @@ func isValidVoice(voice SpeechVoice) bool {
 }
 
 func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) (response JobResponse, err error) {
+
 	if !isValidSpeechModel(request.Model) {
 		err = ErrInvalidSpeechModel
 		return
@@ -83,4 +86,5 @@ func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) 
 
 	err = c.sendRequest(req, &response)
 	return
+
 }
