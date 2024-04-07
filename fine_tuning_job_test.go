@@ -4,11 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/bitcomputing/go-openai"
 	"net/http"
 	"testing"
 
-	"github.com/sashabaranov/go-openai"
-	"github.com/sashabaranov/go-openai/internal/test/checks"
+	"github.com/bitcomputing/go-openai/internal/test/checks"
 )
 
 const testFineTuninigJobID = "fine-tuning-job-id"
