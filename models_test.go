@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	openai "github.com/bitcomputing/go-openai"
 	"github.com/bitcomputing/go-openai/internal/test/checks"
 )
 
