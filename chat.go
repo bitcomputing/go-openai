@@ -281,7 +281,7 @@ type ChatCompletionRequest struct {
 	// https://qwen.readthedocs.io/en/latest/deployment/vllm.html#thinking-non-thinking-modes
 	ChatTemplateKwargs map[string]any `json:"chat_template_kwargs,omitempty"`
 	// enable_thinking for qwen3
-	EnableThinking bool `json:"enable_thinking,omitempty"`
+	EnableThinking bool `json:"enable_thinking"`
 }
 
 type StreamOptions struct {
